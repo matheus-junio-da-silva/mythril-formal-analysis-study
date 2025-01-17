@@ -53,3 +53,9 @@ def test_fire_lasers(mock_sym, mock_fire_lasers, mock_code_info):
     mock_code_info.assert_called()
     assert len(issues) == 1
     assert issues[0]["swc-id"] == "101"
+
+if __name__ == "__main__":
+    with patch("mythril.analysis.report.Issue.add_code_info", return_value=None), \
+         patch("mythril.mythril.mythril_analyzer.fire_lasers", return_value=[Issue("", "", "234", "101", "title", "0x02445")]), \
+         patch("mythril.mythril.mythril_analyzer.SymExecWrapper"):
+        test_fire_lasers()
