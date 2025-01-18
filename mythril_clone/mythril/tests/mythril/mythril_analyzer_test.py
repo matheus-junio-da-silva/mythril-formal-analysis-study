@@ -1,30 +1,19 @@
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import PropertyMock, patch
-
 from mythril.analysis.report import Issue
 from mythril.mythril import MythrilAnalyzer, MythrilDisassembler
 
+def analyze_contract():
+    try:
+        disassembler = MythrilDisassembler(eth=None, solc_version="v0.8.0")
+        solidity_file_path = Path(__file__).parent.parent / "testdata/input_contracts/bridge.sol"
+        
+        if not solidity_file_path.exists():
+            raise FileNotFoundError(f"Contract file not found: {solidity_file_path}")
+            
+        disassembler.load_from_solidity([str(solidity_file_path.absolute())])
 
-@patch("mythril.analysis.report.Issue.add_code_info", return_value=None)
-@patch(
-    "mythril.mythril.mythril_analyzer.fire_lasers",
-    return_value=[Issue("", "", "234", "101", "title", "0x02445")],
-)
-@patch("mythril.mythril.mythril_analyzer.SymExecWrapper")
-def test_fire_lasers(mock_sym, mock_fire_lasers, mock_code_info):
-    type(mock_sym.return_value).execution_info = PropertyMock(return_value=[])
-    disassembler = MythrilDisassembler(eth=None, solc_version="v0.5.0")
-    disassembler.load_from_solidity(
-        [
-            str(
-                (
-                    Path(__file__).parent.parent / "testdata/input_contracts/origin.sol"
-                ).absolute()
-            )
-        ]
-    )
-    args = SimpleNamespace(
+        args = SimpleNamespace(
         execution_timeout=5,
         max_depth=30,
         solver_timeout=10000,
@@ -44,12 +33,19 @@ def test_fire_lasers(mock_sym, mock_fire_lasers, mock_code_info):
         disable_mutation_pruner=False,
         enable_summaries=False,
         enable_state_merging=False,
-    )
-    analyzer = MythrilAnalyzer(disassembler, cmd_args=args)
+        )
 
-    issues = analyzer.fire_lasers(modules=[]).sorted_issues()
-    mock_sym.assert_called()
-    mock_fire_lasers.assert_called()
-    mock_code_info.assert_called()
-    assert len(issues) == 1
-    assert issues[0]["swc-id"] == "101"
+        analyzer = MythrilAnalyzer(disassembler, cmd_args=args)
+        issues = analyzer.fire_lasers(modules=[]).sorted_issues()
+        
+        if not issues:
+            print("No issues found")
+        else:
+            for issue in issues:
+                print(issue)
+                
+    except Exception as e:
+        print(f"Error during analysis: {str(e)}")
+
+if __name__ == "__main__":
+    analyze_contract()

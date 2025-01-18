@@ -693,35 +693,11 @@ def load_code(disassembler: MythrilDisassembler, args: Namespace):
     """
 
     address = None
-    if getattr(args, "code", None):
-        # Load from bytecode
-        code = args.code[2:] if args.code.startswith("0x") else args.code
-        address, _ = disassembler.load_from_bytecode(code, args.bin_runtime)
-    elif getattr(args, "codefile", None):
-        bytecode = "".join([l.strip() for l in args.codefile if len(l.strip()) > 0])
-        bytecode = bytecode[2:] if bytecode.startswith("0x") else bytecode
-        address, _ = disassembler.load_from_bytecode(bytecode, args.bin_runtime)
-    elif getattr(args, "address", None):
-        # Get bytecode from a contract address
-        address, _ = disassembler.load_from_address(args.address)
-    elif getattr(args, "solidity_files", None):
+    if getattr(args, "solidity_files", None):
         # Compile Solidity source file(s)
-        if args.command in ANALYZE_LIST and args.graph and len(args.solidity_files) > 1:
-            exit_with_error(
-                args.outform,
-                "Cannot generate call graphs from multiple input files. Please do it one at a time.",
-            )
         address, _ = disassembler.load_from_solidity(
             args.solidity_files
         )  # list of files
-    elif args.command in FOUNDRY_LIST:
-        address, _ = disassembler.load_from_foundry()
-
-    else:
-        exit_with_error(
-            getattr(args, "outform", "text"),
-            "No input bytecode. Please provide EVM code via -c BYTECODE, -a ADDRESS, -f BYTECODE_FILE or <SOLIDITY_FILE>",
-        )
     return address
 
 
@@ -904,65 +880,19 @@ def parse_args_and_execute(parser: ArgumentParser, args: Namespace) -> None:
     :param args: The args
     """
 
-    if args.epic:
-        path = os.path.dirname(os.path.realpath(__file__))
-        sys.argv.remove("--epic")
-        os.system(" ".join(sys.argv) + " | python3 " + path + "/epic.py")
-        sys.exit()
-
-    if args.command not in COMMAND_LIST or args.command is None:
-        parser.print_help()
-        sys.exit()
-
-    if args.command == VERSION_COMMAND:
-        if args.outform == "json":
-            print(json.dumps({"version_str": VERSION}))
-        else:
-            print("Mythril version {}".format(VERSION))
-        sys.exit()
-
-    if args.command == LIST_DETECTORS_COMMAND:
-        modules = []
-        for module in ModuleLoader().get_detection_modules():
-            modules.append({"classname": type(module).__name__, "title": module.name})
-        if args.outform == "json":
-            print(json.dumps(modules))
-        else:
-            for module_data in modules:
-                print("{}: {}".format(module_data["classname"], module_data["title"]))
-        sys.exit()
-
-    if args.command == HELP_COMMAND:
-        parser.print_help()
-        sys.exit()
-
-    if args.command in CONCOLIC_LIST:
-        _ = MythrilConfig.init_mythril_dir()
-        with open(args.input) as f:
-            concrete_data = json.load(f)
-        output_list = concolic_execution(
-            concrete_data, args.branches.split(","), args.solver_timeout
-        )
-        json.dump(output_list, sys.stdout, indent=4)
-        sys.exit()
-
     # Parse cmdline args
     validate_args(args)
     try:
-        if args.command == FUNCTION_TO_HASH_COMMAND:
-            contract_hash_to_address(args)
-        config = set_config(args)
-        solc_json = getattr(args, "solc_json", None)
-        solv = getattr(args, "solv", None)
-        solc_args = getattr(args, "solc_args", None)
         disassembler = MythrilDisassembler(
-            eth=config.eth,
-            solc_version=solv,
-            solc_settings_json=solc_json,
-            solc_args=solc_args,
+            eth=None,
+            solc_version=None,
+            solc_settings_json=None,
+            solc_args=None,
         )
-
-        address = load_code(disassembler, args)
+        #address = load_code(disassembler, args)
+        address, _ = disassembler.load_from_solidity(
+            args.solidity_files
+        )  # list of files
         execute_command(
             disassembler=disassembler, address=address, parser=parser, args=args
         )
