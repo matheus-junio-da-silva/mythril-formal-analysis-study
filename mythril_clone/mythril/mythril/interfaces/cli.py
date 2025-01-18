@@ -669,11 +669,6 @@ def execute_command(
 
     try:
         report = analyzer.fire_lasers(
-            modules=(
-                [m.strip() for m in args.modules.strip().split(",")]
-                if args.modules
-                else None
-            ),
             transaction_count=args.transaction_count,
         )
 
