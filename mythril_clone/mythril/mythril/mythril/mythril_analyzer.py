@@ -165,7 +165,8 @@ class MythrilAnalyzer:
                     disable_dependency_pruning=self.disable_dependency_pruning,
                     custom_modules_directory=self.custom_modules_directory,
                 )
-                issues = fire_lasers(sym, modules)
+                #issues = fire_lasers(sym, modules)
+                issues = retrieve_callback_issues()
                 execution_info = sym.execution_info
             except DetectorNotFoundError as e:
                 # Bubble up
