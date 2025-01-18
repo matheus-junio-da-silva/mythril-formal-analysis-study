@@ -738,129 +738,40 @@ def execute_command(
     :param args:
     :return:
     """
-    if getattr(args, "beam_search", None):
-        strategy = f"beam-search: {args.beam_search}"
-    else:
-        strategy = getattr(args, "strategy", "dfs")
+    strategy = getattr(args, "strategy", "dfs")
+    analyzer = MythrilAnalyzer(
+        strategy=strategy, disassembler=disassembler, address=address, cmd_args=args
+    )
 
-    if args.command == READ_STORAGE_COMNAND:
-        storage = disassembler.get_state_variable_from_storage(
-            address=address,
-            params=[a.strip() for a in args.storage_slots.strip().split(",")],
-        )
-        print(storage)
-
-    elif args.command in DISASSEMBLE_LIST:
-        if disassembler.contracts[0].code:
-            print("Runtime Disassembly: \n" + disassembler.contracts[0].get_easm())
-        if disassembler.contracts[0].creation_code:
-            print("Disassembly: \n" + disassembler.contracts[0].get_creation_easm())
-
-    elif args.command == SAFE_FUNCTIONS_COMMAND:
-        args.no_onchain_data = args.disable_dependency_pruning = (
-            args.unconstrained_storage
-        ) = True
-        args.pruning_factor = 1
-        function_analyzer = MythrilAnalyzer(
-            strategy=strategy, disassembler=disassembler, address=address, cmd_args=args
-        )
-        try:
-            report = function_analyzer.fire_lasers(
-                modules=(
-                    [m.strip() for m in args.modules.strip().split(",")]
-                    if args.modules
-                    else None
-                ),
-                transaction_count=1,
-            )
-            print_function_report(disassembler, report)
-        except DetectorNotFoundError as e:
-            exit_with_error("text", format(e))
-        except CriticalError as e:
-            exit_with_error("text", "Analysis error encountered: " + format(e))
-
-    elif args.command in ANALYZE_LIST + FOUNDRY_LIST:
-        analyzer = MythrilAnalyzer(
-            strategy=strategy, disassembler=disassembler, address=address, cmd_args=args
+    try:
+        report = analyzer.fire_lasers(
+            modules=(
+                [m.strip() for m in args.modules.strip().split(",")]
+                if args.modules
+                else None
+            ),
+            transaction_count=args.transaction_count,
         )
 
-        if not disassembler.contracts:
-            exit_with_error(
-                args.outform, "input files do not contain any valid contracts"
-            )
-
-        if args.attacker_address:
-            try:
-                ACTORS["ATTACKER"] = args.attacker_address
-            except ValueError:
-                exit_with_error(args.outform, "Attacker address is invalid")
-
-        if args.creator_address:
-            try:
-                ACTORS["CREATOR"] = args.creator_address
-            except ValueError:
-                exit_with_error(args.outform, "Creator address is invalid")
-
-        if args.graph:
-            html = analyzer.graph_html(
-                contract=analyzer.contracts[0],
-                enable_physics=args.enable_physics,
-                phrackify=args.phrack,
-                transaction_count=args.transaction_count,
-            )
-
-            try:
-                with open(args.graph, "w") as f:
-                    f.write(html)
-            except Exception as e:
-                exit_with_error(args.outform, "Error saving graph: " + str(e))
-
-        elif args.statespace_json:
-
-            if not analyzer.contracts:
-                exit_with_error(
-                    args.outform, "input files do not contain any valid contracts"
-                )
-
-            statespace = analyzer.dump_statespace(contract=analyzer.contracts[0])
-
-            try:
-                with open(args.statespace_json, "w") as f:
-                    json.dump(statespace, f)
-            except Exception as e:
-                exit_with_error(args.outform, "Error saving json: " + str(e))
-
+        outputs = {
+            "json": report.as_json(),
+            "jsonv2": report.as_swc_standard_format(),
+            "text": report.as_text(),
+            "markdown": report.as_markdown(),
+        }
+        print(outputs[args.outform])
+        if len(report.issues) > 0:
+            exit(1)
         else:
-            try:
-                report = analyzer.fire_lasers(
-                    modules=(
-                        [m.strip() for m in args.modules.strip().split(",")]
-                        if args.modules
-                        else None
-                    ),
-                    transaction_count=args.transaction_count,
-                )
+            exit(0)
+    except DetectorNotFoundError as e:
+        exit_with_error(args.outform, format(e))
+    except CriticalError as e:
+        exit_with_error(
+            args.outform, "Analysis error encountered: " + format(e)
+        )
 
-                outputs = {
-                    "json": report.as_json(),
-                    "jsonv2": report.as_swc_standard_format(),
-                    "text": report.as_text(),
-                    "markdown": report.as_markdown(),
-                }
-                print(outputs[args.outform])
-                if len(report.issues) > 0:
-                    exit(1)
-                else:
-                    exit(0)
-            except DetectorNotFoundError as e:
-                exit_with_error(args.outform, format(e))
-            except CriticalError as e:
-                exit_with_error(
-                    args.outform, "Analysis error encountered: " + format(e)
-                )
 
-    else:
-        parser.print_help()
 
 
 def contract_hash_to_address(args: Namespace):

@@ -1,4 +1,5 @@
 try:
+    """parse args and execute"""
     #instancia de MythrilDisassembler
     disassembler = MythrilDisassembler(
         eth=None,
@@ -12,7 +13,7 @@ try:
         args.solidity_files
     )  # list of files
 
-    execute_command(
-        disassembler=disassembler, address=address, parser=parser, args=args
-    )
+    """execute command"""
+
+    
 
