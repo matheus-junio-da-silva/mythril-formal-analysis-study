@@ -253,18 +253,7 @@ def main() -> None:
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Commands")
-    safe_function_parser = subparsers.add_parser(
-        SAFE_FUNCTIONS_COMMAND,
-        help="Check functions which are completely safe using symbolic execution",
-        parents=[
-            rpc_parser,
-            utilities_parser,
-            creation_input_parser,
-            runtime_input_parser,
-            output_parser,
-        ],
-        formatter_class=RawTextHelpFormatter,
-    )
+    
     analyzer_parser = subparsers.add_parser(
         ANALYZE_LIST[0],
         help="Triggers the analysis of the smart contract",
@@ -278,73 +267,8 @@ def main() -> None:
         aliases=ANALYZE_LIST[1:],
         formatter_class=RawTextHelpFormatter,
     )
-    create_safe_functions_parser(safe_function_parser)
     create_analyzer_parser(analyzer_parser)
-
-    disassemble_parser = subparsers.add_parser(
-        DISASSEMBLE_LIST[0],
-        help="Disassembles the smart contract",
-        aliases=DISASSEMBLE_LIST[1:],
-        parents=[
-            rpc_parser,
-            utilities_parser,
-            creation_input_parser,
-            runtime_input_parser,
-        ],
-        formatter_class=RawTextHelpFormatter,
-    )
-    create_disassemble_parser(disassemble_parser)
-
-    concolic_parser = subparsers.add_parser(
-        CONCOLIC_LIST[0],
-        help="Runs concolic execution to flip the desired branches",
-        aliases=CONCOLIC_LIST[1:],
-        parents=[],
-        formatter_class=RawTextHelpFormatter,
-    )
-    create_concolic_parser(concolic_parser)
-
-    foundry_parser = subparsers.add_parser(
-        FOUNDRY_LIST[0],
-        help="Triggers the analysis of the smart contract",
-        parents=[
-            rpc_parser,
-            utilities_parser,
-            output_parser,
-        ],
-        aliases=FOUNDRY_LIST[1:],
-        formatter_class=RawTextHelpFormatter,
-    )
-
-    _ = subparsers.add_parser(
-        LIST_DETECTORS_COMMAND,
-        parents=[output_parser],
-        help="Lists available detection modules",
-    )
-    read_storage_parser = subparsers.add_parser(
-        READ_STORAGE_COMNAND,
-        help="Retrieves storage slots from a given address through rpc",
-        parents=[rpc_parser],
-    )
-    contract_func_to_hash = subparsers.add_parser(
-        FUNCTION_TO_HASH_COMMAND, help="Returns the hash signature of the function"
-    )
-    contract_hash_to_addr = subparsers.add_parser(
-        HASH_TO_ADDRESS_COMMAND,
-        help="converts the hashes in the blockchain to ethereum address",
-    )
-    subparsers.add_parser(
-        VERSION_COMMAND, parents=[output_parser], help="Outputs the version"
-    )
-
-    create_read_storage_parser(read_storage_parser)
-    create_hash_to_addr_parser(contract_hash_to_addr)
-    create_func_to_hash_parser(contract_func_to_hash)
-    create_foundry_parser(foundry_parser)
-    subparsers.add_parser(HELP_COMMAND, add_help=False)
-
     # Get config values
-
     args = parser.parse_args()
     parse_args_and_execute(parser=parser, args=args)
 
@@ -738,129 +662,34 @@ def execute_command(
     :param args:
     :return:
     """
-    if getattr(args, "beam_search", None):
-        strategy = f"beam-search: {args.beam_search}"
-    else:
-        strategy = getattr(args, "strategy", "dfs")
+    strategy = getattr(args, "strategy", "dfs")
+    analyzer = MythrilAnalyzer(
+        strategy=strategy, disassembler=disassembler, address=address, cmd_args=args
+    )
 
-    if args.command == READ_STORAGE_COMNAND:
-        storage = disassembler.get_state_variable_from_storage(
-            address=address,
-            params=[a.strip() for a in args.storage_slots.strip().split(",")],
-        )
-        print(storage)
-
-    elif args.command in DISASSEMBLE_LIST:
-        if disassembler.contracts[0].code:
-            print("Runtime Disassembly: \n" + disassembler.contracts[0].get_easm())
-        if disassembler.contracts[0].creation_code:
-            print("Disassembly: \n" + disassembler.contracts[0].get_creation_easm())
-
-    elif args.command == SAFE_FUNCTIONS_COMMAND:
-        args.no_onchain_data = args.disable_dependency_pruning = (
-            args.unconstrained_storage
-        ) = True
-        args.pruning_factor = 1
-        function_analyzer = MythrilAnalyzer(
-            strategy=strategy, disassembler=disassembler, address=address, cmd_args=args
-        )
-        try:
-            report = function_analyzer.fire_lasers(
-                modules=(
-                    [m.strip() for m in args.modules.strip().split(",")]
-                    if args.modules
-                    else None
-                ),
-                transaction_count=1,
-            )
-            print_function_report(disassembler, report)
-        except DetectorNotFoundError as e:
-            exit_with_error("text", format(e))
-        except CriticalError as e:
-            exit_with_error("text", "Analysis error encountered: " + format(e))
-
-    elif args.command in ANALYZE_LIST + FOUNDRY_LIST:
-        analyzer = MythrilAnalyzer(
-            strategy=strategy, disassembler=disassembler, address=address, cmd_args=args
+    try:
+        report = analyzer.fire_lasers(
+            modules=(
+                [m.strip() for m in args.modules.strip().split(",")]
+                if args.modules
+                else None
+            ),
+            transaction_count=args.transaction_count,
         )
 
-        if not disassembler.contracts:
-            exit_with_error(
-                args.outform, "input files do not contain any valid contracts"
-            )
-
-        if args.attacker_address:
-            try:
-                ACTORS["ATTACKER"] = args.attacker_address
-            except ValueError:
-                exit_with_error(args.outform, "Attacker address is invalid")
-
-        if args.creator_address:
-            try:
-                ACTORS["CREATOR"] = args.creator_address
-            except ValueError:
-                exit_with_error(args.outform, "Creator address is invalid")
-
-        if args.graph:
-            html = analyzer.graph_html(
-                contract=analyzer.contracts[0],
-                enable_physics=args.enable_physics,
-                phrackify=args.phrack,
-                transaction_count=args.transaction_count,
-            )
-
-            try:
-                with open(args.graph, "w") as f:
-                    f.write(html)
-            except Exception as e:
-                exit_with_error(args.outform, "Error saving graph: " + str(e))
-
-        elif args.statespace_json:
-
-            if not analyzer.contracts:
-                exit_with_error(
-                    args.outform, "input files do not contain any valid contracts"
-                )
-
-            statespace = analyzer.dump_statespace(contract=analyzer.contracts[0])
-
-            try:
-                with open(args.statespace_json, "w") as f:
-                    json.dump(statespace, f)
-            except Exception as e:
-                exit_with_error(args.outform, "Error saving json: " + str(e))
-
+        print(report.as_text())
+        if len(report.issues) > 0:
+            exit(1)
         else:
-            try:
-                report = analyzer.fire_lasers(
-                    modules=(
-                        [m.strip() for m in args.modules.strip().split(",")]
-                        if args.modules
-                        else None
-                    ),
-                    transaction_count=args.transaction_count,
-                )
+            exit(0)
+    except DetectorNotFoundError as e:
+        exit_with_error(args.outform, format(e))
+    except CriticalError as e:
+        exit_with_error(
+            args.outform, "Analysis error encountered: " + format(e)
+        )
 
-                outputs = {
-                    "json": report.as_json(),
-                    "jsonv2": report.as_swc_standard_format(),
-                    "text": report.as_text(),
-                    "markdown": report.as_markdown(),
-                }
-                print(outputs[args.outform])
-                if len(report.issues) > 0:
-                    exit(1)
-                else:
-                    exit(0)
-            except DetectorNotFoundError as e:
-                exit_with_error(args.outform, format(e))
-            except CriticalError as e:
-                exit_with_error(
-                    args.outform, "Analysis error encountered: " + format(e)
-                )
 
-    else:
-        parser.print_help()
 
 
 def contract_hash_to_address(args: Namespace):
