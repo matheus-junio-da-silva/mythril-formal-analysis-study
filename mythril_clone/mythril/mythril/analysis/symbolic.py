@@ -85,28 +85,18 @@ class SymExecWrapper:
         """
         if isinstance(address, str):
             address = symbol_factory.BitVecVal(int(address, 16), 256)
-        if isinstance(address, int):
+        if isinstance(address, int): # f
             address = symbol_factory.BitVecVal(address, 256)
+            
         beam_width = None
-        if strategy == "dfs":
-            s_strategy: Type[BasicSearchStrategy] = DepthFirstSearchStrategy
-        elif strategy == "bfs":
+        if strategy == "bfs": # v
             s_strategy = BreadthFirstSearchStrategy
-        elif strategy == "naive-random":
-            s_strategy = ReturnRandomNaivelyStrategy
-        elif strategy == "weighted-random":
-            s_strategy = ReturnWeightedRandomStrategy
-        elif "beam-search: " in strategy:
-            beam_width = int(strategy.split("beam-search: ")[1])
-            s_strategy = BeamSearch
-        elif "pending" in strategy:
-            s_strategy = DelayConstraintStrategy
         else:
             raise ValueError("Invalid strategy argument supplied")
 
-        if args.incremental_txs is False:
+        if args.incremental_txs is False: 
             tx_strategy = RfTxPrioritiser(contract)
-        else:
+        else: # v
             tx_strategy = None
 
         creator_account = Account(
@@ -120,9 +110,10 @@ class SymExecWrapper:
             compulsory_statespace
             or len(ModuleLoader().get_detection_modules(EntryPoint.POST, modules)) > 0
         )
-        if not contract.creation_code:
+        if not contract.creation_code: # f
             self.accounts = {hex(ACTORS.attacker.value): attacker_account}
         else:
+            # if contract has creation code, we need to add creator account
             self.accounts = {
                 hex(ACTORS.creator.value): creator_account,
                 hex(ACTORS.attacker.value): attacker_account,
@@ -140,20 +131,20 @@ class SymExecWrapper:
             tx_strategy=tx_strategy,
         )
 
-        if loop_bound is not None:
+        if loop_bound is not None: # v
             self.laser.extend_strategy(
                 BoundedLoopsStrategy, loop_bound=loop_bound, beam_width=beam_width
             )
 
         plugin_loader = LaserPluginLoader()
         plugin_loader.load(CoverageMetricsPluginBuilder())
-        if args.enable_state_merge:
+        if args.enable_state_merge: # f
             plugin_loader.load(StateMergePluginBuilder())
-        if not args.disable_coverage_strategy:
+        if not args.disable_coverage_strategy:# v
             plugin_loader.load(CoveragePluginBuilder())
-        if not args.disable_mutation_pruner:
+        if not args.disable_mutation_pruner: # v
             plugin_loader.load(MutationPrunerBuilder())
-        if not args.disable_iprof:
+        if not args.disable_iprof: # v
             plugin_loader.load(InstructionProfilerBuilder())
         if args.enable_summaries:
             plugin_loader.load(SymbolicSummaryPluginBuilder())
@@ -163,7 +154,7 @@ class SymExecWrapper:
             "call-depth-limit", call_depth_limit=args.call_depth_limit
         )
 
-        if not disable_dependency_pruning:
+        if not disable_dependency_pruning: # v
             plugin_loader.load(DependencyPrunerBuilder())
 
         plugin_loader.instrument_virtual_machine(self.laser, None)
@@ -172,7 +163,7 @@ class SymExecWrapper:
         for account in self.accounts.values():
             world_state.put_account(account)
 
-        if run_analysis_modules:
+        if run_analysis_modules: # v
             analysis_modules = ModuleLoader().get_detection_modules(
                 EntryPoint.CALLBACK, modules
             )
@@ -186,148 +177,16 @@ class SymExecWrapper:
                     analysis_modules, hook_type="post"
                 ),
             )
-
+        
         if isinstance(contract, SolidityContract) and create_timeout != 0:
             self.laser.sym_exec(
                 creation_code=contract.creation_code,
                 contract_name=contract.name,
                 world_state=world_state,
-            )
-        elif isinstance(contract, EVMContract) and contract.creation_code:
-            self.laser.sym_exec(
-                creation_code=contract.creation_code,
-                contract_name=contract.name,
-                world_state=world_state,
-            )
-        else:
-            account = Account(
-                address,
-                contract.disassembly,
-                dynamic_loader=dynloader,
-                contract_name=contract.name,
-                balances=world_state.balances,
-                concrete_storage=(
-                    True if (dynloader is not None and dynloader.active) else False
-                ),
-            )  # concrete_storage can get overridden by global args
-
-            if dynloader is not None:
-                if isinstance(address, int):
-                    try:
-                        _balance = dynloader.read_balance(
-                            "{0:#0{1}x}".format(address, 42)
-                        )
-                        account.set_balance(_balance)
-                    except:
-                        # Initial balance will be a symbolic variable
-                        pass
-                elif isinstance(address, str):
-                    try:
-                        _balance = dynloader.read_balance(address)
-                        account.set_balance(_balance)
-                    except:
-                        # Initial balance will be a symbolic variable
-                        pass
-                elif isinstance(address, BitVec):
-                    try:
-                        _balance = dynloader.read_balance(
-                            "{0:#0{1}x}".format(address.value, 42)
-                        )
-                        account.set_balance(_balance)
-                    except:
-                        # Initial balance will be a symbolic variable
-                        pass
-
-            world_state.put_account(account)
-            self.laser.sym_exec(world_state=world_state, target_address=address.value)
-
-        if not requires_statespace:
+            )   
+        if not requires_statespace: # v
             return
-
-        self.nodes = self.laser.nodes
-        self.edges = self.laser.edges
-
-        # Parse calls to make them easily accessible
-
-        self.calls: List[Call] = []
-
-        for key in self.nodes:
-
-            state_index = 0
-
-            for state in self.nodes[key].states:
-
-                instruction = state.get_current_instruction()
-
-                op = instruction["opcode"]
-
-                if op in ("CALL", "CALLCODE", "DELEGATECALL", "STATICCALL"):
-
-                    stack = state.mstate.stack
-
-                    if op in ("CALL", "CALLCODE"):
-                        gas, to, value, meminstart, meminsz, _, _ = (
-                            get_variable(stack[-1]),
-                            get_variable(stack[-2]),
-                            get_variable(stack[-3]),
-                            get_variable(stack[-4]),
-                            get_variable(stack[-5]),
-                            get_variable(stack[-6]),
-                            get_variable(stack[-7]),
-                        )
-
-                        if (
-                            to.type == VarType.CONCRETE
-                            and 0 < to.val <= PRECOMPILE_COUNT
-                        ):
-                            # ignore prebuilts
-                            continue
-
-                        if (
-                            meminstart.type == VarType.CONCRETE
-                            and meminsz.type == VarType.CONCRETE
-                        ):
-                            self.calls.append(
-                                Call(
-                                    self.nodes[key],
-                                    state,
-                                    state_index,
-                                    op,
-                                    to,
-                                    gas,
-                                    value,
-                                    state.mstate.memory[
-                                        meminstart.val : meminsz.val + meminstart.val
-                                    ],
-                                )
-                            )
-                        else:
-                            self.calls.append(
-                                Call(
-                                    self.nodes[key],
-                                    state,
-                                    state_index,
-                                    op,
-                                    to,
-                                    gas,
-                                    value,
-                                )
-                            )
-                    else:
-                        gas, to, meminstart, meminsz, _, _ = (
-                            get_variable(stack[-1]),
-                            get_variable(stack[-2]),
-                            get_variable(stack[-3]),
-                            get_variable(stack[-4]),
-                            get_variable(stack[-5]),
-                            get_variable(stack[-6]),
-                        )
-
-                        self.calls.append(
-                            Call(self.nodes[key], state, state_index, op, to, gas)
-                        )
-
-                state_index += 1
+        
 
     @property
     def execution_info(self) -> List[ExecutionInfo]:

@@ -167,8 +167,8 @@ class LaserEVM:
         :param creation_code The creation code to create the target contract in the symbolic environment
         :param contract_name The name that the created account should be associated with
         """
-        pre_configuration_mode = target_address is not None
-        scratch_mode = creation_code is not None and contract_name is not None
+        pre_configuration_mode = target_address is not None # false
+        scratch_mode = creation_code is not None and contract_name is not None # true
         if pre_configuration_mode == scratch_mode:
             raise ValueError("Symbolic execution started with invalid parameters")
 
@@ -178,12 +178,12 @@ class LaserEVM:
 
         time_handler.start_execution(self.execution_timeout)
         self.time = datetime.now()
-
-        if pre_configuration_mode:
+        #TODO REMOVE THIS ---------------------------------------------------------------------
+        if pre_configuration_mode: # f
             self.open_states = [world_state]
             log.info("Starting message call transaction to {}".format(target_address))
             self.execute_transactions(symbol_factory.BitVecVal(target_address, 256))
-
+        # ----------------------------------------------------------------------------------
         elif scratch_mode:
             log.info("Starting contract creation transaction")
 
@@ -196,7 +196,7 @@ class LaserEVM:
                 )
             )
 
-            if len(self.open_states) == 0:
+            if len(self.open_states) == 0: # f
                 log.warning(
                     "No contract was created during the execution of contract creation "
                     "Increase the resources for creation execution (--max-depth or --create-timeout) "
@@ -206,13 +206,6 @@ class LaserEVM:
             self.execute_transactions(created_account.address)
 
         log.info("Finished symbolic execution")
-        if self.requires_statespace:
-            log.info(
-                "%d nodes, %d edges, %d total states",
-                len(self.nodes),
-                len(self.edges),
-                self.total_states,
-            )
 
         for hook in self._stop_sym_exec_hooks:
             hook()
@@ -226,13 +219,13 @@ class LaserEVM:
         """
         for hook in self._start_exec_trans_hooks:
             hook()
-        if self.tx_strategy is None:
-            if self.executed_transactions is False:
+        if self.tx_strategy is None: # v
+            if self.executed_transactions is False: # v
                 self.time = datetime.now()
                 self._execute_transactions_incremental(
                     address, txs=args.transaction_sequences
                 )
-        else:
+        else: # f 
             self.time = datetime.now()
             self._execute_transactions_non_ordered(address)
         for hook in self._stop_exec_trans_hooks:
@@ -264,7 +257,7 @@ class LaserEVM:
             for state in self.open_states:
                 state.transient_storage.clear()
             if self.use_reachability_check:
-                if isinstance(self.strategy, DelayConstraintStrategy):
+                if isinstance(self.strategy, DelayConstraintStrategy): # v
                     open_states = []
                     for state in self.open_states:
                         c_val = self.strategy.model_cache.check_quick_sat(
@@ -291,7 +284,7 @@ class LaserEVM:
             )
             func_hashes = txs[i] if txs else None
 
-            if func_hashes:
+            if func_hashes: # f
                 for itr, func_hash in enumerate(func_hashes):
                     if func_hash in (-1, -2):
                         func_hashes[itr] = func_hash
