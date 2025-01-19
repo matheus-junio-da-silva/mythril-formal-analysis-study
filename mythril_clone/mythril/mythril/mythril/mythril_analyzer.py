@@ -168,6 +168,7 @@ class MythrilAnalyzer:
                 #issues = fire_lasers(sym, modules)
                 issues = retrieve_callback_issues()
                 execution_info = sym.execution_info
+            # TODO remove this except blocks -------------------------------------
             except DetectorNotFoundError as e:
                 # Bubble up
                 raise e
@@ -181,14 +182,16 @@ class MythrilAnalyzer:
                 )
                 issues = retrieve_callback_issues(modules)
                 exceptions.append(traceback.format_exc())
+            # ----------------------------------------------------------------
             for issue in issues:
                 issue.add_code_info(contract)
 
             all_issues += issues
             log.info("Solver statistics: \n{}".format(str(SolverStatistics())))
-
+        # TODO see if this can be removed, probably not -------------------------------------
         source_data = Source()
         source_data.get_source_from_contracts_list(self.contracts)
+        # ----------------------------------------------------------------
 
         # Finally, output the results
         report = Report(
