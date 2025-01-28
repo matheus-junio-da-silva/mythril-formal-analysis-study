@@ -26,6 +26,9 @@ class BasicSearchStrategy(ABC):
 
     def __next__(self):
         try:
+            # busca o estado global de acordo com a estratégia
+            # ex: BreadthFirstSearchStrategy pega o primeiro 
+            # estado global da lista de trabalho
             global_state = self.get_strategic_global_state()
             if global_state.mstate.depth >= self.max_depth:
                 return self.__next__()

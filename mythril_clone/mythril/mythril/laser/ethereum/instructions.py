@@ -124,6 +124,7 @@ class StateTransition(object):
         :return:
         """
         global_state_copy = copy(state)
+        # chama a função que está sendo decorada de acordo com o opcode
         return func(func_obj, global_state_copy)
 
     def increment_states_pc(self, states: List[GlobalState]) -> List[GlobalState]:
