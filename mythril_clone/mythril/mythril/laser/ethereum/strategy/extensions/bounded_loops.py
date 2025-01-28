@@ -115,7 +115,7 @@ class BoundedLoopsStrategy(BasicSearchStrategy):
                 List[JumpdestCountAnnotation],
                 list(state.get_annotations(JumpdestCountAnnotation)),
             )
-
+            
             if len(annotations) == 0:
                 annotation = JumpdestCountAnnotation()
                 state.annotate(annotation)

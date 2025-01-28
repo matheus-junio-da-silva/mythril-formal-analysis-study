@@ -425,12 +425,13 @@ class LaserEVM:
             )
             self._execute_post_hook(op_code, new_global_states)
             return new_global_states, op_code
-
+        # <<<< execucao dos modulos de detecção de vulnerabilidades 
+        # antes que ocorra a execuçao simbolica do opcode >>>>
         try:
             self._execute_pre_hook(op_code, global_state)
         except PluginSkipState:
             return [], None
-
+        # <<<<<<<<<<<<<< criacao do novo estado global >>>>>>>>>>>>>>>>>>
         try:
             new_global_states = Instruction(
                 op_code,
@@ -438,7 +439,7 @@ class LaserEVM:
                 pre_hooks=self.instr_pre_hook[op_code],
                 post_hooks=self.instr_post_hook[op_code],
             ).evaluate(global_state)
-
+        # -----------------------------------------------------------------
         except VmException as e:
             for hook in self._transaction_end_hooks:
                 hook(
@@ -510,7 +511,7 @@ class LaserEVM:
                     revert_changes=False or end_signal.revert,
                     return_data=transaction.return_data,
                 )
-
+        # -----------------------------------------------------------------
         self._execute_post_hook(op_code, new_global_states)
 
         return new_global_states, op_code
