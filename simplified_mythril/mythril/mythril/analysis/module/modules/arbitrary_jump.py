@@ -28,6 +28,7 @@ def is_unique_jumpdest(jump_dest: BitVec, state: GlobalState) -> bool:
     except UnsatError:
         return True
     concrete_jump_dest = model.eval(jump_dest.raw, model_completion=True)
+    print(f"Debug: concrete_jump_dest => {concrete_jump_dest}")
     try:
         model = get_model(
             state.world_state.constraints
