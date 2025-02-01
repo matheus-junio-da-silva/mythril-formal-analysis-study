@@ -21,22 +21,22 @@ def test_custom_jumpdest():
     # Configuração da conta
     active_account = Account("0x0", code=Disassembly("60606040"))  # Código de exemplo: PUSH1 0x40
     
-    # Configuração correta do Environment
+    # Contexto da transação (remetente, dados, gás, etc.)
     environment = Environment(
         active_account=active_account,
-        sender=ACTORS.attacker,  # Parâmetro correto: sender
+        sender=ACTORS.attacker,  
         calldata=SymbolicCalldata("2"),
-        gasprice=symbol_factory.BitVecVal(0, 256),  # Nome correto: gasprice
-        callvalue=symbol_factory.BitVecVal(0, 256),  # Parâmetro faltante
+        gasprice=symbol_factory.BitVecVal(0, 256),  
+        callvalue=symbol_factory.BitVecVal(0, 256),  
         origin=ACTORS.attacker,
         basefee=symbol_factory.BitVecVal(0, 256),
         code=active_account.code
     )
     
-    # Configuração do MachineState
+    # Estado da EVM durante a execução (stack, memória, PC, etc.)
     machine_state = MachineState(gas_limit=8000000)
     
-    # Criação da transação simbólica
+    # Transação simbólica que será executada      
     transaction = MessageCallTransaction(
         world_state=world_state,
         gas_limit=8000000,
@@ -57,9 +57,10 @@ def test_custom_jumpdest():
     state.world_state.transaction_sequence = [transaction]
     
     # Criação da stack personalizada
+    # Variável simbólica que representa um valor controlado pelo usuário (ex: msg.value).
     call_value2 = symbol_factory.BitVecSym("call_value2", 256)
     
-    # Corrigindo as operações com BitVec
+    # Valor construído para simular o destino do salto
     raw_value = Concat(
         symbol_factory.BitVecVal(0, 8),
         Extract(31, 8, symbol_factory.BitVecVal(268, 256) + call_value2),
@@ -70,6 +71,7 @@ def test_custom_jumpdest():
     state.mstate.stack = [raw_value]
     
     # Adição de constraints
+    # call_value2 terá apenas um valor possível -> sem vulnerabilidade
     #state.world_state.constraints.append(call_value2 == symbol_factory.BitVecVal(0x1234, 256))
 
     # Execução do detector
