@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Call Graph</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" integrity="sha256-iq5ygGJ7021Pi7H5S+QAUXCPUfaBzfqeplbg/KlEssg=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha256-JuQeAGbk9rG/EoRMixuy5X8syzICcvB0dj3KindZkY0=" crossorigin="anonymous"></script>
+
+    
+    <style type="text/css">
+        #mynetwork {
+          height: 100%;
+            background-color: #232625;
+        }
+        body {
+            background-color: #232625;
+            color: #ffffff;
+            font-size: 10px;
+        }
+        html, body {
+          height: 95%;
+        }
+    </style>
+    
+
+    <script>
+        var options = {"autoResize": true, "edges": {"font": {"align": "horizontal", "background": "none", "color": "#FFFFFF", "face": "arial", "multi": false, "strokeColor": "#ffffff", "strokeWidth": 0, "vadjust": 0}}, "height": "100%", "layout": {"hierarchical": {"blockShifting": true, "direction": "LR", "edgeMinimization": true, "enabled": true, "levelSeparation": 450, "nodeSpacing": 200, "parentCentralization": false, "sortMethod": "directed", "treeSpacing": 100}, "improvedLayout": true}, "manipulation": false, "nodes": {"borderWidth": 1, "borderWidthSelected": 2, "chosen": true, "color": "#000000", "font": {"align": "left", "color": "#FFFFFF"}, "shape": "box"}, "physics": {"enabled": false}, "width": "100%"};
+        var nodes = [{"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "0 PUSH1 0x80\n2 PUSH1 0x40\n4 MSTORE\n5 PUSH1 0x00\n7 CALLVALUE\n8 EQ\n9 ISZERO\n10 ISZERO\n11 ISZERO\n12 PUSH2 0x0014\n15 JUMPI", "id": "8764087692671", "isExpanded": false, "label": "0 PUSH1 0x80\n2 PUSH1 0x40\n4 MSTORE\n5 PUSH1 0x00\n7 CALLVALUE\n8 EQ\n(click to expand +)", "size": 150, "truncLabel": "0 PUSH1 0x80\n2 PUSH1 0x40\n4 MSTORE\n5 PUSH1 0x00\n7 CALLVALUE\n8 EQ\n(click to expand +)"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "16 PUSH1 0x00\n18 DUP1\n19 REVERT", "id": "8764088059785", "isExpanded": false, "label": "16 PUSH1 0x00\n18 DUP1\n19 REVERT", "size": 150, "truncLabel": "16 PUSH1 0x00\n18 DUP1\n19 REVERT"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "20 JUMPDEST\n21 PUSH2 0x0231\n24 DUP1\n25 PUSH2 0x0023\n28 PUSH1 0x00\n30 CODECOPY\n31 PUSH1 0x00\n33 RETURN", "id": "8764087665696", "isExpanded": false, "label": "20 JUMPDEST\n21 PUSH2 0x0231\n24 DUP1\n25 PUSH2 0x0023\n28 PUSH1 0x00\n30 CODECOPY\n(click to expand +)", "size": 150, "truncLabel": "20 JUMPDEST\n21 PUSH2 0x0231\n24 DUP1\n25 PUSH2 0x0023\n28 PUSH1 0x00\n30 CODECOPY\n(click to expand +)"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "0 PUSH1 (128,)\n2 PUSH1 (64,)\n4 MSTORE\n5 PUSH1 (4,)\n7 CALLDATASIZE\n8 LT\n9 PUSH2 (0, 65)\n12 JUMPI", "id": "8764086513074", "isExpanded": false, "label": "0 PUSH1 (128,)\n2 PUSH1 (64,)\n4 MSTORE\n5 PUSH1 (4,)\n7 CALLDATASIZE\n8 LT\n(click to expand +)", "size": 150, "truncLabel": "0 PUSH1 (128,)\n2 PUSH1 (64,)\n4 MSTORE\n5 PUSH1 (4,)\n7 CALLDATASIZE\n8 LT\n(click to expand +)"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "13 PUSH1 (0,)\n15 CALLDATALOAD\n16 PUSH29 (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\n46 SWAP1\n47 DIV\n48 PUSH4 (255, 255, 255, 255)\n53 AND\n54 DUP1\n55 PUSH4 (106, 31, 158, 25)\n60 EQ\n61 PUSH2 (0, 70)\n64 JUMPI", "id": "8764086522668", "isExpanded": false, "label": "13 PUSH1 (0,)\n15 CALLDATALOAD\n16 PUSH29 (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\n46 SWAP1\n47 DIV\n48 PUSH4 (255, 255, 255, 255)\n(click to expand +)", "size": 150, "truncLabel": "13 PUSH1 (0,)\n15 CALLDATALOAD\n16 PUSH29 (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\n46 SWAP1\n47 DIV\n48 PUSH4 (255, 255, 255, 255)\n(click to expand +)"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "65 JUMPDEST\n66 PUSH1 (0,)\n68 DUP1\n69 REVERT", "id": "8764086522545", "isExpanded": false, "label": "65 JUMPDEST\n66 PUSH1 (0,)\n68 DUP1\n69 REVERT", "size": 150, "truncLabel": "65 JUMPDEST\n66 PUSH1 (0,)\n68 DUP1\n69 REVERT"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "65 JUMPDEST\n66 PUSH1 (0,)\n68 DUP1\n69 REVERT", "id": "8764086536184", "isExpanded": false, "label": "65 JUMPDEST\n66 PUSH1 (0,)\n68 DUP1\n69 REVERT", "size": 150, "truncLabel": "65 JUMPDEST\n66 PUSH1 (0,)\n68 DUP1\n69 REVERT"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "70 JUMPDEST\n71 PUSH2 (0, 78)\n74 PUSH2 (0, 80)\n77 JUMP", "id": "8764086536052", "isExpanded": false, "label": "70 JUMPDEST\n71 PUSH2 (0, 78)\n74 PUSH2 (0, 80)\n77 JUMP", "size": 150, "truncLabel": "70 JUMPDEST\n71 PUSH2 (0, 78)\n74 PUSH2 (0, 80)\n77 JUMP"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "80 JUMPDEST\n81 PUSH2 (0, 88)\n84 PUSH2 (1, 238)\n87 JUMP", "id": "8764087921479", "isExpanded": false, "label": "80 JUMPDEST\n81 PUSH2 (0, 88)\n84 PUSH2 (1, 238)\n87 JUMP", "size": 150, "truncLabel": "80 JUMPDEST\n81 PUSH2 (0, 88)\n84 PUSH2 (1, 238)\n87 JUMP"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "494 JUMPDEST\n495 PUSH1 (32,)\n497 PUSH1 (64,)\n499 MLOAD\n500 SWAP1\n501 DUP2\n502 ADD\n503 PUSH1 (64,)\n505 MSTORE\n506 DUP1\n507 PUSH2 (2, 3)\n510 DUP2\n511 MSTORE\n512 POP\n513 SWAP1\n514 JUMP", "id": "8764086545370", "isExpanded": false, "label": "494 JUMPDEST\n495 PUSH1 (32,)\n497 PUSH1 (64,)\n499 MLOAD\n500 SWAP1\n501 DUP2\n(click to expand +)", "size": 150, "truncLabel": "494 JUMPDEST\n495 PUSH1 (32,)\n497 PUSH1 (64,)\n499 MLOAD\n500 SWAP1\n501 DUP2\n(click to expand +)"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "88 JUMPDEST\n89 PUSH1 (0,)\n91 CALLVALUE\n92 EQ\n93 ISZERO\n94 ISZERO\n95 ISZERO\n96 PUSH2 (0, 209)\n99 JUMPI", "id": "8764086428532", "isExpanded": false, "label": "88 JUMPDEST\n89 PUSH1 (0,)\n91 CALLVALUE\n92 EQ\n93 ISZERO\n94 ISZERO\n(click to expand +)", "size": 150, "truncLabel": "88 JUMPDEST\n89 PUSH1 (0,)\n91 CALLVALUE\n92 EQ\n93 ISZERO\n94 ISZERO\n(click to expand +)"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "100 PUSH1 (64,)\n102 MLOAD\n103 PUSH32 (8, 195, 121, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\n136 DUP2\n137 MSTORE\n138 PUSH1 (4,)\n140 ADD\n141 DUP1\n142 DUP1\n143 PUSH1 (32,)\n145 ADD\n146 DUP3\n147 DUP2\n148 SUB\n149 DUP3\n150 MSTORE\n151 PUSH1 (11,)\n153 DUP2\n154 MSTORE\n155 PUSH1 (32,)\n157 ADD\n158 DUP1\n159 PUSH32 (115, 101, 110, 100, 32, 102, 117, 110, 100, 115, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\n192 DUP2\n193 MSTORE\n194 POP\n195 PUSH1 (32,)\n197 ADD\n198 SWAP2\n199 POP\n200 POP\n201 PUSH1 (64,)\n203 MLOAD\n204 DUP1\n205 SWAP2\n206 SUB\n207 SWAP1\n208 REVERT", "id": "8764086544830", "isExpanded": false, "label": "100 PUSH1 (64,)\n102 MLOAD\n103 PUSH32 (8, 195, 121, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\n136 DUP2\n137 MSTORE\n138 PUSH1 (4,)\n(click to expand +)", "size": 150, "truncLabel": "100 PUSH1 (64,)\n102 MLOAD\n103 PUSH32 (8, 195, 121, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\n136 DUP2\n137 MSTORE\n138 PUSH1 (4,)\n(click to expand +)"}, {"color": {"background": "#2f7e5b", "border": "#26996f", "highlight": {"background": "#28a16f", "border": "#26996f"}}, "fullLabel": "209 JUMPDEST\n210 PUSH2 (1, 12)\n213 DUP2\n214 PUSH1 (0,)\n216 ADD\n217 SWAP1\n218 PUSH8 (255, 255, 255, 255, 255, 255, 255, 255)\n227 AND\n228 SWAP1\n229 DUP2\n230 PUSH8 (255, 255, 255, 255, 255, 255, 255, 255)\n239 AND\n240 DUP2\n241 MSTORE\n242 POP\n243 POP\n244 CALLVALUE\n245 DUP2\n246 MLOAD\n247 ADD\n248 DUP2\n249 MSTORE\n250 PUSH2 (1, 9)\n253 DUP2\n254 PUSH1 (0,)\n256 ADD\n257 MLOAD\n258 PUSH4 (255, 255, 255, 255)\n263 AND\n264 JUMP", "id": "8764086434229", "isExpanded": false, "label": "209 JUMPDEST\n210 PUSH2 (1, 12)\n213 DUP2\n214 PUSH1 (0,)\n216 ADD\n217 SWAP1\n(click to expand +)", "size": 150, "truncLabel": "209 JUMPDEST\n210 PUSH2 (1, 12)\n213 DUP2\n214 PUSH1 (0,)\n216 ADD\n217 SWAP1\n(click to expand +)"}];
+        var edges = [{"arrows": "to", "from": "8764087692671", "label": "call_value1 == 0", "smooth": {"type": "cubicBezier"}, "to": "8764088059785"}, {"arrows": "to", "from": "8764087692671", "label": "Not(call_value1 == 0)", "smooth": {"type": "cubicBezier"}, "to": "8764087665696"}, {"arrows": "to", "from": "8764087665696", "label": "", "smooth": {"type": "cubicBezier"}, "to": "8764086513074"}, {"arrows": "to", "from": "8764086513074", "label": "Or(Not(Extract(0xff, 3, 2_calldatasize) == 0),   ULE(4, Extract(2, 0, 2_calldatasize)))", "smooth": {"type": "cubicBezier"}, "to": "8764086522668"}, {"arrows": "to", "from": "8764086513074", "label": "Not(Or(Not(Extract(0xff, 3, 2_calldatasize) == 0),       ULE(4, Extract(2, 0, 2_calldatasize))))", "smooth": {"type": "cubicBezier"}, "to": "8764086522545"}, {"arrows": "to", "from": "8764086522668", "label": "Not(And(2_calldata[3] == 25,        Not(2_calldatasize \u003c= 3),        2_calldata[2] == 0x9e,        Not(2_calldatasize \u003c= 2),        2_calldata[1] == 31,        Not(2_calldatasize \u003c= 1),        2_calldata[0] == 0x6a,        Not(2_calldatasize \u003c= 0)))", "smooth": {"type": "cubicBezier"}, "to": "8764086536184"}, {"arrows": "to", "from": "8764086522668", "label": "And(2_calldata[3] == 25,    Not(2_calldatasize \u003c= 3),    2_calldata[2] == 0x9e,    Not(2_calldatasize \u003c= 2),    2_calldata[1] == 31,    Not(2_calldatasize \u003c= 1),    2_calldata[0] == 0x6a,    Not(2_calldatasize \u003c= 0))", "smooth": {"type": "cubicBezier"}, "to": "8764086536052"}, {"arrows": "to", "from": "8764086536052", "label": "", "smooth": {"type": "cubicBezier"}, "to": "8764087921479"}, {"arrows": "to", "from": "8764087921479", "label": "", "smooth": {"type": "cubicBezier"}, "to": "8764086545370"}, {"arrows": "to", "from": "8764086545370", "label": "", "smooth": {"type": "cubicBezier"}, "to": "8764086428532"}, {"arrows": "to", "from": "8764086428532", "label": "call_value2 == 0", "smooth": {"type": "cubicBezier"}, "to": "8764086544830"}, {"arrows": "to", "from": "8764086428532", "label": "Not(call_value2 == 0)", "smooth": {"type": "cubicBezier"}, "to": "8764086434229"}];
+    </script>
+</head>
+<body>
+<p>Mythril / Ethereum LASER Symbolic VM</p>
+<div id="mynetwork"></div>
+<script type="text/javascript">
+    var container = document.getElementById('mynetwork');
+
+    var nodesSet = new vis.DataSet(nodes);
+    var edgesSet = new vis.DataSet(edges);
+    var data = {'nodes': nodesSet, 'edges': edgesSet}
+
+    var gph = new vis.Network(container, data, options);
+    gph.on("click", function (params) {
+        // parse node id
+        var nodeID = params['nodes']['0'];
+        if (nodeID) {
+            var clickedNode = nodesSet.get(nodeID);
+
+            if(clickedNode.isExpanded) {
+                clickedNode.label = clickedNode.truncLabel;
+            }
+            else {
+                clickedNode.label = clickedNode.fullLabel;
+            }
+
+            clickedNode.isExpanded = !clickedNode.isExpanded;
+
+            nodesSet.update(clickedNode);
+        }
+    });
+</script>
+</body>
+</html>
