@@ -202,7 +202,7 @@ class LaserEVM:
                     "Increase the resources for creation execution (--max-depth or --create-timeout) "
                     "Check whether the bytecode is indeed the creation code, otherwise use the --bin-runtime flag"
                 )
-
+            print("inicio da execução das transações") 
             self.execute_transactions(created_account.address)
 
         log.info("Finished symbolic execution")
@@ -341,6 +341,8 @@ class LaserEVM:
             if not create and self._check_execution_termination():
                 log.debug("Hit execution timeout, returning.")
                 return final_states + [global_state] if track_gas else None
+            print("pilha:", global_state.mstate.stack)
+            #print("Constraints:", global_state.world_state.constraints)
             try:
                 new_states, op_code = self.execute_state(global_state)
             except NotImplementedError:
