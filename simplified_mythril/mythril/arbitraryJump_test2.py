@@ -61,6 +61,7 @@ def test_custom_jumpdest():
     call_value2 = symbol_factory.BitVecSym("call_value2", 256)
     
     # Valor construído para simular o destino do salto
+    # cada elemento pode ser um valor concreto ou um valor simbólico (geralmente representado por BitVec)
     raw_value = Concat(
         symbol_factory.BitVecVal(0, 8), #Cria um valor de 8 bits com todos os bits definidos como 0
         Extract(31, 8, symbol_factory.BitVecVal(268, 256) + call_value2), # Extrai 8 bits (do bit 31 ao bit 24) do valor resultante da soma de 268 e call_value2
