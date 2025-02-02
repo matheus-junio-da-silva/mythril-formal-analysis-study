@@ -62,9 +62,9 @@ def test_custom_jumpdest():
     
     # Valor construído para simular o destino do salto
     raw_value = Concat(
-        symbol_factory.BitVecVal(0, 8),
-        Extract(31, 8, symbol_factory.BitVecVal(268, 256) + call_value2),
-        Extract(7, 0, call_value2) + symbol_factory.BitVecVal(12, 8)
+        symbol_factory.BitVecVal(0, 8), #Cria um valor de 8 bits com todos os bits definidos como 0
+        Extract(31, 8, symbol_factory.BitVecVal(268, 256) + call_value2), # Extrai 8 bits (do bit 31 ao bit 24) do valor resultante da soma de 268 e call_value2
+        Extract(7, 0, call_value2) + symbol_factory.BitVecVal(12, 8) # Extrai os 8 bits menos significativos (do bit 7 ao bit 0) de call_value2
     )
     
     # Configuração da stack
