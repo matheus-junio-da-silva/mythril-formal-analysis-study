@@ -12,9 +12,55 @@ from mythril.laser.ethereum.transaction.symbolic import ACTORS
 from mythril.laser.ethereum.time_handler import time_handler
 from pathlib import Path
 from mythril.mythril import MythrilDisassembler
+"""
+    ao verificar as instrucoes do mythril,
+    devemos tomar cuidado com a ordem das instrucoes
+    que sao verificadas, pois ele utiliza Depth-First Search (DFS) 
+    com prioridade de estados ativos
+    ex:
+    address: 100 (Bloco 1)
+    address: 209 (Bloco 2)
+    address: 102 (Bloco 1)
+    address: 210 (Bloco 2)
+    ...
+    Isso mostra que o Mythril está alternando 
+    entre dois estados ativos (um para cada bloco).
+"""
+
+"""
+    O destino do salto (JUMPDEST) é calculado dinamicamente 
+    (provavelmente usando MLOAD/CALLVALUE).
+
+    Se o destino for controlado por um usuário 
+    (ex: via calldata), é uma vulnerabilidade SWC-127.
+"""
+
+"""
+    parte vulnerável do contrato:
+
+    assembly { 
+        mstore(func, add(mload(func), callvalue)) 
+    }
+
+    Funcionamento:
+
+    -> mload(func): Lê o valor armazenado no endereço 
+    de memória de func.
+
+    -> add(..., callvalue): Soma callvalue 
+    (valor enviado na transação) ao valor lido.
+
+    -> mstore(func, ...): Escreve o novo valor de 
+    volta no endereço de func.
+
+"""
+"""
+
+"""
 
 
 def test_custom_jumpdest():
+    
 
     time_handler.start_execution(30)  # 30 seconds
     
