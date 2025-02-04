@@ -419,7 +419,9 @@ class LaserEVM:
         #print("address:", address)
         instruct = global_state.get_current_instruction()
         address = instruct.get("address")
-        print("address:", address)
+        if address == 244:
+            # CALLVALUE
+            print("address:", address)
         try:
             op_code = instructions[global_state.mstate.pc]["opcode"]
         except IndexError:
