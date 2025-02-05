@@ -341,8 +341,7 @@ class LaserEVM:
             if not create and self._check_execution_termination():
                 log.debug("Hit execution timeout, returning.")
                 return final_states + [global_state] if track_gas else None
-            #print("pilha:", global_state.mstate.stack)
-            #print("Constraints:", global_state.world_state.constraints)
+            
             try:
                 new_states, op_code = self.execute_state(global_state)
             except NotImplementedError:
@@ -417,11 +416,34 @@ class LaserEVM:
         instructions = global_state.environment.code.instruction_list
         #address = global_state.get_current_instruction()["address"]
         #print("address:", address)
-        instruct = global_state.get_current_instruction()
-        address = instruct.get("address")
-        if address == 244:
+        #instruct = global_state.get_current_instruction()
+        #address = instruct.get("address")
+        #if address == 244:
             # CALLVALUE
-            print("address:", address)
+            #print("address:", address)
+        instruct = global_state.get_current_instruction()
+        addresss = instruct.get("address")
+        pilha = global_state.mstate.stack
+        Constraints = global_state.world_state.constraints
+        if addresss == 244 or addresss == 245 or addresss == 246 or addresss == 247 or addresss == 248 or addresss == 249:
+            # vulnerabilidade
+            print("address:", addresss)
+            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            print("pilha:", global_state.mstate.stack)
+            #print("Constraints:", global_state.world_state.constraints)
+        if addresss == 249:
+            print("address:", addresss)
+            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            print("pilha:", global_state.mstate.stack)
+            #print("Constraints:", global_state.world_state.constraints)
+        if addresss == 250 or addresss == 253 or addresss == 254 or addresss == 256 or addresss == 257 or addresss == 258 or addresss == 263 or addresss == 264:
+            
+            print("continuacao")
+            print("address:", addresss)
+            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            print("pilha:", global_state.mstate.stack)
+            #print("Constraints:", global_state.world_state.constraints)
+            
         try:
             op_code = instructions[global_state.mstate.pc]["opcode"]
         except IndexError:
@@ -440,19 +462,38 @@ class LaserEVM:
             )
             self._execute_post_hook(op_code, new_global_states)
             return new_global_states, op_code
-
+        
+        if addresss == 249:
+            print("address:", addresss)
+            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            print("pilha:", global_state.mstate.stack)
+            #print("Constraints:", global_state.world_state.constraints)
+        
         try:
             self._execute_pre_hook(op_code, global_state)
         except PluginSkipState:
             return [], None
 
         try:
+            if addresss == 249:
+                print("address:", addresss)
+                print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+                print("pilha:", global_state.mstate.stack)
+                #print("Constraints:", global_state.world_state.constraints)
+        
             new_global_states = Instruction(
                 op_code,
                 self.dynamic_loader,
                 pre_hooks=self.instr_pre_hook[op_code],
                 post_hooks=self.instr_post_hook[op_code],
             ).evaluate(global_state)
+
+            if addresss == 249:
+                print("address:", addresss)
+                print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+                print("pilha:", global_state.mstate.stack)
+                #print("Constraints:", global_state.world_state.constraints)
+        
 
         except VmException as e:
             for hook in self._transaction_end_hooks:
