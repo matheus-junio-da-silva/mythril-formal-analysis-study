@@ -425,23 +425,23 @@ class LaserEVM:
         addresss = instruct.get("address")
         pilha = global_state.mstate.stack
         Constraints = global_state.world_state.constraints
-        if addresss == 244 or addresss == 245 or addresss == 246 or addresss == 247 or addresss == 248 or addresss == 249:
+        #if addresss == 244 or addresss == 245 or addresss == 246 or addresss == 247 or addresss == 248 or addresss == 249:
             # vulnerabilidade
-            print("address:", addresss)
-            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
-            print("pilha:", global_state.mstate.stack)
+            #print("address:", addresss)
+            #print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            #print("pilha:", global_state.mstate.stack)
             #print("Constraints:", global_state.world_state.constraints)
-        if addresss == 249:
-            print("address:", addresss)
-            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
-            print("pilha:", global_state.mstate.stack)
+        #if addresss == 249:
+            #print("address:", addresss)
+            #print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            #print("pilha:", global_state.mstate.stack)
             #print("Constraints:", global_state.world_state.constraints)
-        if addresss == 250 or addresss == 253 or addresss == 254 or addresss == 256 or addresss == 257 or addresss == 258 or addresss == 263 or addresss == 264:
+        #if addresss == 250 or addresss == 253 or addresss == 254 or addresss == 256 or addresss == 257 or addresss == 258 or addresss == 263 or addresss == 264:
             
-            print("continuacao")
-            print("address:", addresss)
-            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
-            print("pilha:", global_state.mstate.stack)
+            #print("continuacao")
+            #print("address:", addresss)
+            #print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            #print("pilha:", global_state.mstate.stack)
             #print("Constraints:", global_state.world_state.constraints)
             
         try:
@@ -463,10 +463,10 @@ class LaserEVM:
             self._execute_post_hook(op_code, new_global_states)
             return new_global_states, op_code
         
-        if addresss == 249:
-            print("address:", addresss)
-            print("opcode:", instructions[global_state.mstate.pc]["opcode"])
-            print("pilha:", global_state.mstate.stack)
+        #if addresss == 249:
+            #print("address:", addresss)
+            #print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+            #print("pilha:", global_state.mstate.stack)
             #print("Constraints:", global_state.world_state.constraints)
         
         try:
@@ -475,10 +475,10 @@ class LaserEVM:
             return [], None
 
         try:
-            if addresss == 249:
-                print("address:", addresss)
-                print("opcode:", instructions[global_state.mstate.pc]["opcode"])
-                print("pilha:", global_state.mstate.stack)
+            #if addresss == 249:
+                #print("address:", addresss)
+                #print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+                #print("pilha:", global_state.mstate.stack)
                 #print("Constraints:", global_state.world_state.constraints)
         
             new_global_states = Instruction(
@@ -488,10 +488,10 @@ class LaserEVM:
                 post_hooks=self.instr_post_hook[op_code],
             ).evaluate(global_state)
 
-            if addresss == 249:
-                print("address:", addresss)
-                print("opcode:", instructions[global_state.mstate.pc]["opcode"])
-                print("pilha:", global_state.mstate.stack)
+            #if addresss == 249:
+                #print("address:", addresss)
+                #print("opcode:", instructions[global_state.mstate.pc]["opcode"])
+                #print("pilha:", global_state.mstate.stack)
                 #print("Constraints:", global_state.world_state.constraints)
         
 
