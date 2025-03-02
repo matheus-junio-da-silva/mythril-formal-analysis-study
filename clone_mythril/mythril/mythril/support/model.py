@@ -24,6 +24,77 @@ log = logging.getLogger(__name__)
 
 model_cache = ModelCache()
 
+def generate_json_constraints(constraints, minimize, maximize, generate=False):
+    """
+    save constraints in a json file
+
+    :param constraints: list of constraints
+    :param minimize: Tuple of minimization conditions
+    :param maximize: Tuple of maximization conditions
+    :param generate: Boolean to generate the file
+    :return:
+
+    mythril/support/model.py
+    """
+    if generate:
+        # Gerando IDs numéricos
+        constraints_json = [{"id": i+1, "expr": str(constraint).replace("\n", "")} for i, constraint in enumerate(constraints)]
+        minimize_json = [{"id": i+1, "expr": str(e).replace("\n", "")} for i, e in enumerate(minimize)]
+        maximize_json = [{"id": i+1, "expr": str(e).replace("\n", "")} for i, e in enumerate(maximize)]
+        
+        # Criando dicionário para JSON
+        data = {
+            "constraints": constraints_json,
+            "minimize": minimize_json,
+            "maximize": maximize_json,
+        }
+        
+        # Convertendo para JSON e salvando em arquivo
+        with open("z3_constraints.json", "w") as f:
+            json.dump(data, f, indent=4)
+
+def process_smt_lib(s, generate_files):
+    """
+    Process the SMT-LIB file, generate a file with the constraints 
+    and run the solver
+    
+    :param s: Z3 solver with constraints loaded
+    :param generate_files: Boolean to generate the file
+    :return:
+    
+    mythril/support/model.py
+    """
+
+    if not generate_files:
+        return
+    
+    try:
+        # Salvar o estado SMT-LIB em um arquivo
+        with open("z3_constraints.smt2", "w") as f:
+            f.write(s.sexpr())
+        
+        with open("z3_constraints.smt2", "r") as f:
+            smt2_constraints = f.read()
+        
+        s_new = z3_solver.Optimize()
+        # Carregar as restrições para o solver
+        s_new.from_string(smt2_constraints)
+        
+        # Rodar o solver
+        result = s_new.check()
+        
+        # Verificar resultado
+        if result == z3_solver.sat:
+            print("Satisfiável! Modelo:")
+            print(s_new.model())
+        elif result == z3_solver.unsat:
+            print("Insatisfiável!")
+        else:
+            print("Resultado desconhecido.")
+    except Exception as e:
+        print(f"Erro ao salvar o arquivo: {e}")
+
+
 
 def solver_worker(
     constraints,
@@ -50,70 +121,10 @@ def solver_worker(
         s.maximize(e)
 
 
-    minhacondicao_debug = True
-    if minhacondicao_debug:
-        """
-        # Gerando representação das constraints
-        constraints_json = [str(constraint).replace("\n", "") for constraint in constraints]
-        minimize_json = [str(e).replace("\n", "") for e in minimize]
-        maximize_json = [str(e).replace("\n", "") for e in maximize]
-        """
-
-        """# Gerando IDs e representação das constraints
-        constraints_json = [{"id": f"c{i+1}", "expr": str(constraint).replace("\n", "")} for i, constraint in enumerate(constraints)]
-        minimize_json = [{"id": f"m{i+1}", "expr": str(e).replace("\n", "")} for i, e in enumerate(minimize)]
-        maximize_json = [{"id": f"x{i+1}", "expr": str(e).replace("\n", "")} for i, e in enumerate(maximize)]
-        """
-
-        # Gerando IDs numéricos
-        constraints_json = [{"id": i+1, "expr": str(constraint).replace("\n", "")} for i, constraint in enumerate(constraints)]
-        minimize_json = [{"id": i+1, "expr": str(e).replace("\n", "")} for i, e in enumerate(minimize)]
-        maximize_json = [{"id": i+1, "expr": str(e).replace("\n", "")} for i, e in enumerate(maximize)]
+    generate_files = False
+    if generate_files:
+        generate_json_constraints(constraints, minimize, maximize, generate_files)
         
-        
-        # Gerando representação do solver (formato SMT-LIB)
-        #solver_state = s.to_smt2()
-        
-        # Criando dicionário para JSON
-        data = {
-            "constraints": constraints_json,
-            "minimize": minimize_json,
-            "maximize": maximize_json,
-            #"solver_state": solver_state
-        }
-        
-        # Convertendo para JSON
-        json_output = json.dumps(data, indent=4)
-        with open("z3_constraints.json", "w") as f:
-            json.dump(data, f, indent=4)
-        #print(json_output)
-
-        """
-        try: 
-            # Salvando as constraints em um arquivo binário
-            with open("z3_constraints.pkl", "wb") as f:
-                pickle.dump((constraints, minimize, maximize), f)
-        except Exception as e:
-            print(f"Erro ao salvar o arquivo: {e}")
-
-        """
-
-        """# Geração do JSON com melhorias
-        constraints_json2 = [constraint.sexpr() if hasattr(constraint, "sexpr") else str(constraint) for constraint in constraints if constraint is not True]
-        minimize_json2 = [e.sexpr() if hasattr(e, "sexpr") else str(e) for e in minimize]
-        maximize_json2 = [e.sexpr() if hasattr(e, "sexpr") else str(e) for e in maximize]
-        
-        #solver_state = s.to_smt2()
-
-        data2 = {
-            "constraints(S-expressions)": constraints_json2,
-            "minimize(S-expressions)": minimize_json2,
-            "maximize(S-expressions)": maximize_json2,
-            #"solver_state": solver_state
-        }
-        
-        json_output2 = json.dumps(data2, indent=4)
-        print(json_output2)"""
 
     if args.solver_log:
         Path(args.solver_log).mkdir(parents=True, exist_ok=True)
@@ -128,7 +139,10 @@ def solver_worker(
         ) as f:
             f.write(s.sexpr())
 
-    if minhacondicao_debug:
+    if generate_files:
+
+        process_smt_lib(s, generate_files)
+        """
         try:
             # Salvar o estado SMT-LIB em um arquivo
             with open("z3_constraints.smt2", "w") as f:
@@ -153,7 +167,7 @@ def solver_worker(
                 print("Resultado desconhecido.")    
         except Exception as e:
             print(f"Erro ao salvar o arquivo: {e}")
-
+        """
 
     result = s.check()
     return result, s

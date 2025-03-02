@@ -1,26 +1,29 @@
 /*
- * @source: https://consensys.github.io/smart-contract-best-practices/known_attacks/#dos-with-unexpected-revert
- * @author: ConsenSys Diligence
- * Modified by Bernhard Mueller
+ * @source: https://gist.github.com/wadeAlexC/7a18de852693b3f890560ab6a211a2b8
+ * @author: Alexander Wade
  */
 
-pragma solidity 0.4.24;
+pragma solidity ^0.4.25;
 
-contract Refunder {
+contract FunctionTypes {
 
-address[] private refundAddresses;
-mapping (address => uint) public refunds;
+    constructor() public payable { require(msg.value != 0); }
 
-    constructor() {
-        refundAddresses.push(0x79B483371E87d664cd39491b5F06250165e4b184);
-        refundAddresses.push(0x79B483371E87d664cd39491b5F06250165e4b185);
+    function withdraw() private {
+        require(msg.value == 0, 'dont send funds!');
+        address(msg.sender).transfer(address(this).balance);
     }
 
-    // bad
-    function refundAll() public {
-        for(uint x; x < refundAddresses.length; x++) { // arbitrary length iteration based on how many addresses participated
-            require(refundAddresses[x].send(refunds[refundAddresses[x]])); // doubly bad, now a single failure on send will hold up all funds
-        }
-    }
+    function frwd() internal
+        { withdraw(); }
 
+    struct Func { function () internal f; }
+
+    function breakIt() public payable {
+        require(msg.value != 0, 'send funds!');
+        Func memory func;
+        func.f = frwd;
+        assembly { mstore(func, add(mload(func), callvalue)) }
+        func.f();
+    }
 }
