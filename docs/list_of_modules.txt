@@ -1,0 +1,17 @@
+AccidentallyKillable: Contract can be accidentally killed by anyone
+ArbitraryJump: Caller can redirect execution to arbitrary bytecode locations
+ArbitraryStorage: Caller can write to arbitrary storage locations
+ArbitraryDelegateCall: Delegatecall to a user-specified address
+EtherThief: Any sender can withdraw ETH from the contract account
+Exceptions: Assertion violation
+ExternalCalls: External call to another contract
+IntegerArithmetics: Integer overflow or underflow
+MultipleSends: Multiple external calls in the same transaction
+PredictableVariables: Control flow depends on a predictable environment variable
+RequirementsViolation: Requirement Violation
+StateChangeAfterCall: State change after an external call
+TransactionOrderDependence: Transaction Order Dependence
+TxOrigin: Control flow depends on tx.origin
+UncheckedRetval: Return value of an external call is not checked
+UnexpectedEther: Unexpected Ether Balance
+UserAssertions: A user-defined assertion has been triggered

@@ -44,6 +44,7 @@ def generate_json_constraints(constraints, minimize, maximize, generate=False):
         
         # Criando dicionário para JSON
         data = {
+            "total_constraints": len(constraints),
             "constraints": constraints_json,
             "minimize": minimize_json,
             "maximize": maximize_json,
