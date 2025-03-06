@@ -14,18 +14,16 @@ from mythril.laser.smt import And, Optimize, simplify
 from mythril.support.support_args import args
 from mythril.support.support_utils import ModelCache
 
-import json
-import z3 as z3_solver
-
+from mythril.a_my_funcntions.generate_final_json_and_smt import process_smt_lib
 
 
 log = logging.getLogger(__name__)
 
 
 model_cache = ModelCache()
-
+"""
 def generate_json_constraints(constraints, minimize, maximize, generate=False):
-    """
+    
     save constraints in a json file
 
     :param constraints: list of constraints
@@ -35,12 +33,15 @@ def generate_json_constraints(constraints, minimize, maximize, generate=False):
     :return:
 
     mythril/support/model.py
-    """
+    
     if generate:
         # Gerando IDs numéricos
-        constraints_json = [{"id": i+1, "expr": str(constraint).replace("\n", "")} for i, constraint in enumerate(constraints)]
-        minimize_json = [{"id": i+1, "expr": str(e).replace("\n", "")} for i, e in enumerate(minimize)]
-        maximize_json = [{"id": i+1, "expr": str(e).replace("\n", "")} for i, e in enumerate(maximize)]
+        constraints_json = [{"id": i+1, 
+                             "expr": str(constraint).replace("\n", "")} for i, constraint in enumerate(constraints)]
+        minimize_json = [{"id": i+1, 
+                          "expr": str(e).replace("\n", "")} for i, e in enumerate(minimize)]
+        maximize_json = [{"id": i+1, 
+                          "expr": str(e).replace("\n", "")} for i, e in enumerate(maximize)]
         
         # Criando dicionário para JSON
         data = {
@@ -52,10 +53,10 @@ def generate_json_constraints(constraints, minimize, maximize, generate=False):
         
         # Convertendo para JSON e salvando em arquivo
         with open("z3_constraints.json", "w") as f:
-            json.dump(data, f, indent=4)
-
+            json.dump(data, f, indent=4)"""
+"""
 def process_smt_lib(s, generate_files):
-    """
+    
     Process the SMT-LIB file, generate a file with the constraints 
     and run the solver
     
@@ -64,7 +65,7 @@ def process_smt_lib(s, generate_files):
     :return:
     
     mythril/support/model.py
-    """
+    
 
     if not generate_files:
         return
@@ -93,7 +94,7 @@ def process_smt_lib(s, generate_files):
         else:
             print("Resultado desconhecido.")
     except Exception as e:
-        print(f"Erro ao salvar o arquivo: {e}")
+        print(f"Erro ao salvar o arquivo: {e}")"""
 
 
 
@@ -123,8 +124,8 @@ def solver_worker(
 
 
     generate_files = False
-    if generate_files:
-        generate_json_constraints(constraints, minimize, maximize, generate_files)
+    #if generate_files:
+        #generate_json_constraints(constraints, minimize, maximize, generate_files)
         
 
     if args.solver_log:
@@ -141,34 +142,7 @@ def solver_worker(
             f.write(s.sexpr())
 
     if generate_files:
-
         process_smt_lib(s, generate_files)
-        """
-        try:
-            # Salvar o estado SMT-LIB em um arquivo
-            with open("z3_constraints.smt2", "w") as f:
-                f.write(s.sexpr())
-
-            with open("z3_constraints.smt2", "r") as f:
-                smt2_constraints = f.read()
-            s_new = z3_solver.Optimize()
-            # Carregar as restrições para o solver
-            s_new.from_string(smt2_constraints)
-
-            # Rodar o solver
-            result = s_new.check()
-
-            # Verificar resultado
-            if result == z3_solver.sat:
-                print("Satisfiável! Modelo:")
-                print(s_new.model())
-            elif result == z3_solver.unsat:
-                print("Insatisfiável!")
-            else:
-                print("Resultado desconhecido.")    
-        except Exception as e:
-            print(f"Erro ao salvar o arquivo: {e}")
-        """
 
     result = s.check()
     return result, s

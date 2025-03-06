@@ -19,6 +19,8 @@ from mythril.laser.ethereum.transaction.transaction_models import (
 from mythril.laser.smt import UGE, symbol_factory
 from mythril.support.model import get_model
 
+from mythril.a_my_funcntions.generate_final_json_and_smt import generate_json_constraints
+
 log = logging.getLogger(__name__)
 z3.set_option(
     max_args=10000000, max_lines=1000000, max_depth=10000000, max_visited=1000000
@@ -66,6 +68,9 @@ def get_transaction_sequence(
     )
 
     try:
+        generate_files = True
+        generate_json_constraints(constraints, global_state._annotations[0],
+                                  minimize, (), generate_files)
         model = get_model(tx_constraints, minimize=minimize)
     except UnsatError:
         raise UnsatError

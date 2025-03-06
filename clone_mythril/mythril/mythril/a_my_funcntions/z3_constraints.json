@@ -1,0 +1,120 @@
+{
+    "total_constraints": 8,
+    "constraints": [
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        },
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        },
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        },
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        },
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        },
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        },
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        },
+        {
+            "pc": 70,
+            "constraints": [
+                "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+            ]
+        },
+        {
+            "pc": 209,
+            "constraints": [
+                "call_value2 == 0"
+            ]
+        }
+    ],
+    "minimize": [
+        {
+            "id": 1,
+            "expr": "1_calldatasize"
+        },
+        {
+            "id": 2,
+            "expr": "call_value1"
+        },
+        {
+            "id": 3,
+            "expr": "2_calldatasize"
+        },
+        {
+            "id": 4,
+            "expr": "call_value2"
+        }
+    ],
+    "maximize": []
+}

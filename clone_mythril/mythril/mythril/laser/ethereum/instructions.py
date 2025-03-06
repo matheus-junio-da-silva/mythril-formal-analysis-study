@@ -62,6 +62,8 @@ from mythril.support.loader import DynLoader
 from mythril.support.model import get_model
 from mythril.support.support_utils import get_code_hash
 
+from mythril.a_my_funcntions.store_rescue_constraints import store_constraints
+
 log = logging.getLogger(__name__)
 
 TT256 = symbol_factory.BitVecVal(0, 256)
@@ -1637,6 +1639,10 @@ class Instruction:
             new_state.mstate.depth += 1
             new_state.mstate.pc += 1
             new_state.world_state.constraints.append(negated)
+            
+            store_constraints(util.get_concrete_int(op0), 
+                              new_state.world_state.constraints[-1]
+                              )
             states.append(new_state)
         else:
             log.debug("Pruned unreachable states.")
@@ -1661,6 +1667,7 @@ class Instruction:
                 new_state.mstate.pc = index
                 new_state.mstate.depth += 1
                 new_state.world_state.constraints.append(condi)
+                #constraint_id = id(new_state.world_state.constraints[-1])
                 states.append(new_state)
             else:
                 log.debug("Pruned unreachable states.")

@@ -73,7 +73,12 @@ class ArbitraryJump(DetectionModule):
 
         if jump_dest.symbolic is False:
             return []
-
+        """
+        novoid = id(state.world_state.constraints[5])
+        constraintnnnn = state.world_state.constraints[5]
+        if (139760689707008 == novoid):
+            print("new_state.world_state.constraints[5] is a constraint")
+        """
         if is_unique_jumpdest(jump_dest, state) is True:
             return []
 
