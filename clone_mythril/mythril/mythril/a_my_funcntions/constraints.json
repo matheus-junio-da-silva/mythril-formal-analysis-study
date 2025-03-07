@@ -6,9 +6,21 @@
         ]
     },
     {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
         "pc": 65,
         "constraints": [
             "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
         ]
     },
     {
@@ -18,9 +30,21 @@
         ]
     },
     {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
         "pc": 209,
         "constraints": [
             "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
         ]
     },
     {
@@ -30,9 +54,21 @@
         ]
     },
     {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
         "pc": 65,
         "constraints": [
             "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
         ]
     },
     {
@@ -42,9 +78,21 @@
         ]
     },
     {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
         "pc": 209,
         "constraints": [
             "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
         ]
     },
     {
@@ -54,9 +102,21 @@
         ]
     },
     {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
         "pc": 65,
         "constraints": [
             "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
         ]
     },
     {
@@ -66,9 +126,21 @@
         ]
     },
     {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
         "pc": 209,
         "constraints": [
             "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
         ]
     },
     {
@@ -78,9 +150,21 @@
         ]
     },
     {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
         "pc": 65,
         "constraints": [
             "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
         ]
     },
     {
@@ -90,9 +174,21 @@
         ]
     },
     {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
         "pc": 209,
         "constraints": [
             "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
         ]
     },
     {
@@ -102,21 +198,9 @@
         ]
     },
     {
-        "pc": 65,
+        "pc": 20,
         "constraints": [
-            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
-        ]
-    },
-    {
-        "pc": 70,
-        "constraints": [
-            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
-        ]
-    },
-    {
-        "pc": 209,
-        "constraints": [
-            "call_value2 == 0"
+            "call_value1 == 0"
         ]
     },
     {
@@ -126,9 +210,21 @@
         ]
     },
     {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
         "pc": 65,
         "constraints": [
             "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
         ]
     },
     {
@@ -138,9 +234,21 @@
         ]
     },
     {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
         "pc": 209,
         "constraints": [
             "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
         ]
     },
     {
@@ -150,9 +258,21 @@
         ]
     },
     {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
         "pc": 65,
         "constraints": [
             "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
         ]
     },
     {
@@ -162,9 +282,21 @@
         ]
     },
     {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
         "pc": 209,
         "constraints": [
             "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
         ]
     },
     {
@@ -174,9 +306,21 @@
         ]
     },
     {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
         "pc": 65,
         "constraints": [
             "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
         ]
     },
     {
@@ -186,9 +330,357 @@
         ]
     },
     {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
         "pc": 209,
         "constraints": [
             "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "call_value1 == 0"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "call_value1 == 0"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "call_value1 == 0"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "call_value1 == 0"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "call_value1 == 0"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "call_value1 == 0"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "call_value1 == 0"
+        ]
+    },
+    {
+        "pc": 20,
+        "constraints": [
+            "Not(call_value1 == 0)"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n   ULE(4, Extract(2, 0, 2_calldatasize)))"
+        ]
+    },
+    {
+        "pc": 65,
+        "constraints": [
+            "Not(Or(Not(Extract(255, 3, 2_calldatasize) == 0),\n       ULE(4, Extract(2, 0, 2_calldatasize))))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "Not(And(2_calldata[3] == 25,\n        Not(2_calldatasize <= 3),\n        2_calldata[2] == 158,\n        Not(2_calldatasize <= 2),\n        2_calldata[1] == 31,\n        Not(2_calldatasize <= 1),\n        2_calldata[0] == 106,\n        Not(2_calldatasize <= 0)))"
+        ]
+    },
+    {
+        "pc": 70,
+        "constraints": [
+            "And(2_calldata[3] == 25,\n    Not(2_calldatasize <= 3),\n    2_calldata[2] == 158,\n    Not(2_calldatasize <= 2),\n    2_calldata[1] == 31,\n    Not(2_calldatasize <= 1),\n    2_calldata[0] == 106,\n    Not(2_calldatasize <= 0))"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "call_value2 == 0"
+        ]
+    },
+    {
+        "pc": 209,
+        "constraints": [
+            "Not(call_value2 == 0)"
         ]
     }
 ]

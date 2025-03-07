@@ -90,6 +90,14 @@ def transfer_ether(
     global_state.world_state.constraints.append(
         UGE(global_state.world_state.balances[sender], value)
     )
+    
+    try:
+        store_constraints(global_state.instruction['address'], 
+                        global_state.world_state.constraints[-1]
+                        )
+    except Exception as e:
+        print(f"Erro ao armazenar restrições: {e}")
+
     global_state.world_state.balances[receiver] += value
     global_state.world_state.balances[sender] -= value
 
@@ -637,6 +645,14 @@ class Instruction:
         )
         state.stack.append(exponentiation)
         global_state.world_state.constraints.append(constraint)
+
+        try:
+            store_constraints(global_state.instruction['address'], 
+                                global_state.world_state.constraints[-1]
+                                )
+        except Exception as e:
+            print(f"Erro ao armazenar restrições: {e}")
+
         return [global_state]
 
     @StateTransition()
@@ -999,6 +1015,13 @@ class Instruction:
                     global_state.environment.calldata.size == no_of_bytes
                 )
 
+                try:
+                    store_constraints(global_state.instruction['address'], 
+                                        global_state.world_state.constraints[-1]
+                                        )
+                except Exception as e:
+                    print(f"Erro ao armazenar restrições: {e}")
+
         else:
             no_of_bytes = len(disassembly.bytecode) // 2
         state.stack.append(no_of_bytes)
@@ -1029,6 +1052,14 @@ class Instruction:
             # Can't access symbolic memory offsets
             length = 64
             global_state.world_state.constraints.append(op1 == length)
+
+            try:
+                store_constraints(global_state.instruction['address'], 
+                                    global_state.world_state.constraints[-1]
+                                    )
+            except Exception as e:
+                print(f"Erro ao armazenar restrições: {e}")
+
         Instruction._sha3_gas_helper(global_state, length)
 
         state.mem_extend(index, length)
@@ -1640,9 +1671,16 @@ class Instruction:
             new_state.mstate.pc += 1
             new_state.world_state.constraints.append(negated)
             
-            store_constraints(util.get_concrete_int(op0), 
-                              new_state.world_state.constraints[-1]
-                              )
+            try:
+                # nao foi utilizado o endereco do jumpi porque ele gera duas constraints
+                # uma para negado e uma para satisfeita
+                # entao armazenamos o jumpdest
+                store_constraints(util.get_concrete_int(op0), 
+                                  new_state.world_state.constraints[-1]
+                                  )
+            except Exception as e:
+                print(f"Erro ao armazenar restrições: {e}")
+
             states.append(new_state)
         else:
             log.debug("Pruned unreachable states.")
@@ -1667,7 +1705,15 @@ class Instruction:
                 new_state.mstate.pc = index
                 new_state.mstate.depth += 1
                 new_state.world_state.constraints.append(condi)
+
+                try:
+                    store_constraints(util.get_concrete_int(op0), 
+                                  new_state.world_state.constraints[-1]
+                                  )
+                except Exception as e:
+                    print(f"Erro ao armazenar restrições: {e}")
                 #constraint_id = id(new_state.world_state.constraints[-1])
+                
                 states.append(new_state)
             else:
                 log.debug("Pruned unreachable states.")
@@ -2070,6 +2116,14 @@ class Instruction:
                     global_state.world_state.constraints.append(
                         value == symbol_factory.BitVecVal(0, 256)
                     )
+
+                    try:
+                        store_constraints(global_state.instruction['address'], 
+                                            global_state.world_state.constraints[-1]
+                                            )
+                    except Exception as e:
+                        print(f"Erro ao armazenar restrições: {e}")
+
                 elif value.value > 0:
                     raise WriteProtection(
                         "Cannot call with non zero value in a static call"
@@ -2215,6 +2269,14 @@ class Instruction:
                 global_state, memory_out_offset, memory_out_size
             )
             global_state.world_state.constraints.append(return_value == 0)
+
+            try:
+                store_constraints(global_state.instruction['address'], 
+                                    global_state.world_state.constraints[-1]
+                                    )
+            except Exception as e:
+                print(f"Erro ao armazenar restrições: {e}")
+
             return [global_state]
 
         try:
@@ -2251,6 +2313,14 @@ class Instruction:
         return_value = global_state.new_bitvec("retval_" + str(instr["address"]), 256)
         global_state.mstate.stack.append(return_value)
         global_state.world_state.constraints.append(return_value == 1)
+
+        try:
+            store_constraints(global_state.instruction['address'], 
+                                global_state.world_state.constraints[-1]
+                                )
+        except Exception as e:
+            print(f"Erro ao armazenar restrições: {e}")
+
         return [global_state]
 
     @StateTransition()
@@ -2363,6 +2433,14 @@ class Instruction:
             )
             global_state.mstate.stack.append(return_value)
             global_state.world_state.constraints.append(return_value == 0)
+
+            try:
+                store_constraints(global_state.instruction['address'], 
+                                    global_state.world_state.constraints[-1]
+                                    )
+            except Exception as e:
+                print(f"Erro ao armazenar restrições: {e}")
+
             return [global_state]
 
         try:
@@ -2399,6 +2477,14 @@ class Instruction:
         return_value = global_state.new_bitvec("retval_" + str(instr["address"]), 256)
         global_state.mstate.stack.append(return_value)
         global_state.world_state.constraints.append(return_value == 1)
+
+        try:
+            store_constraints(global_state.instruction['address'], 
+                                global_state.world_state.constraints[-1]
+                                )
+        except Exception as e:
+            print(f"Erro ao armazenar restrições: {e}")
+
         return [global_state]
 
     @StateTransition()
@@ -2552,5 +2638,12 @@ class Instruction:
         )
         global_state.mstate.stack.append(return_value)
         global_state.world_state.constraints.append(return_value == 1)
+
+        try:
+            store_constraints(global_state.instruction['address'], 
+                                global_state.world_state.constraints[-1]
+                                )
+        except Exception as e:
+            print(f"Erro ao armazenar restrições: {e}")
 
         return [global_state]

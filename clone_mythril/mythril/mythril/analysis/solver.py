@@ -20,6 +20,9 @@ from mythril.laser.smt import UGE, symbol_factory
 from mythril.support.model import get_model
 
 from mythril.a_my_funcntions.generate_final_json_and_smt import generate_json_constraints
+from mythril.a_my_funcntions.json_validation_handler import json_validation_and_generation
+
+
 
 log = logging.getLogger(__name__)
 z3.set_option(
@@ -68,9 +71,16 @@ def get_transaction_sequence(
     )
 
     try:
-        generate_files = True
+        """
+        generate_files = False
+        address_instruction_required = 264
+        if global_state.instruction['address'] == address_instruction_required:
+            generate_files = True
         generate_json_constraints(constraints, global_state._annotations[0],
-                                  minimize, (), generate_files)
+                                  minimize, (), generate_files)"""
+        
+        json_validation_and_generation(global_state, constraints, minimize)
+        
         model = get_model(tx_constraints, minimize=minimize)
     except UnsatError:
         raise UnsatError
